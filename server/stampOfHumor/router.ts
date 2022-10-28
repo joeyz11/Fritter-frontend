@@ -1,0 +1,1 @@
+// all stampOfHumor routes are through freet routes

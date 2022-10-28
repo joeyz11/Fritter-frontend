@@ -3,11 +3,18 @@ import {Types} from 'mongoose';
 import FreetCollection from '../freet/collection';
 
 /**
- * Checks if a freet with freetId is req.params exists
+ * Checks if a freet with freetId exists
  */
 const isFreetExists = async (req: Request, res: Response, next: NextFunction) => {
-  const validFormat = Types.ObjectId.isValid(req.params.freetId);
-  const freet = validFormat ? await FreetCollection.findOne(req.params.freetId) : '';
+  const validFormat = Types.ObjectId.isValid(req.params.freetId) || Types.ObjectId.isValid(req.query.freetId as string);
+  const freetId = req.params.freetId || (req.query.freetId as string)
+  if (!freetId ) {
+    res.status(400).json({
+      error: "Please provide freetId"
+    });
+    return;
+  }
+  const freet = validFormat ? await FreetCollection.findOne(freetId) : '';
   if (!freet) {
     res.status(404).json({
       error: `Freet with freet ID ${req.params.freetId} does not exist.`

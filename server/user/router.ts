@@ -29,15 +29,16 @@ router.get(
 );
 
 /**
- * Sign in user.
+ * Sign in user
  *
  * @name POST /api/users/session
  *
  * @param {string} username - The user's username
  * @param {string} password - The user's password
- * @return {UserResponse} - An object with user's details
+ * @return {string} A success message
+ * @return {UserResponse} - An object with user's details (without password)
  * @throws {403} - If user is already signed in
- * @throws {400} - If username or password is  not in the correct format,
+ * @throws {400} - If username or password is not in the correct format,
  *                 or missing in the req
  * @throws {401} - If the user login credentials are invalid
  *
@@ -67,7 +68,7 @@ router.post(
  *
  * @name DELETE /api/users/session
  *
- * @return - None
+ * @return {string} A success message
  * @throws {403} - If user is not logged in
  *
  */
@@ -91,7 +92,8 @@ router.delete(
  *
  * @param {string} username - username of user
  * @param {string} password - user's password
- * @return {UserResponse} - The created user
+ * @return {string} A success message
+ * @return {UserResponse} - An object with the created user's details (without password)
  * @throws {403} - If there is a user already logged in
  * @throws {409} - If username is already taken
  * @throws {400} - If password or username is not in correct format
@@ -122,6 +124,7 @@ router.post(
  *
  * @param {string} username - The user's new username
  * @param {string} password - The user's new password
+ * @return {string} A success message
  * @return {UserResponse} - The updated user
  * @throws {403} - If user is not logged in
  * @throws {409} - If username already taken

@@ -7,10 +7,10 @@
   >
     <header>
       <h3 class="author">
-        @{{ freet.author }}
+        @{{ freet.freet.author }}
       </h3>
       <div
-        v-if="$store.state.username === freet.author"
+        v-if="$store.state.username === freet.freet.author"
         class="actions"
       >
         <button
@@ -46,11 +46,11 @@
       v-else
       class="content"
     >
-      {{ freet.content }}
+      {{ freet.freet.content }}
     </p>
     <p class="info">
-      Posted at {{ freet.dateModified }}
-      <i v-if="freet.edited">(edited)</i>
+      Posted at {{ freet.freet.dateModified }}
+      <i v-if="freet.freet.edited">(edited)</i>
     </p>
     <section class="alerts">
       <article
