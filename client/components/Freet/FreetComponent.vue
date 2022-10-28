@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       editing: false, // Whether or not this freet is in edit mode
-      draft: this.freet.content, // Potentially-new content for this freet
+      draft: this.freet.freet.content, // Potentially-new content for this freet
       alerts: {} // Displays success/error messages encountered during freet modification
     };
   },
@@ -87,14 +87,14 @@ export default {
        * Enables edit mode on this freet.
        */
       this.editing = true; // Keeps track of if a freet is being edited
-      this.draft = this.freet.content; // The content of our current "draft" while being edited
+      this.draft = this.freet.freet.content; // The content of our current "draft" while being edited
     },
     stopEditing() {
       /**
        * Disables edit mode on this freet.
        */
       this.editing = false;
-      this.draft = this.freet.content;
+      this.draft = this.freet.freet.content;
     },
     deleteFreet() {
       /**
@@ -114,7 +114,7 @@ export default {
       /**
        * Updates freet to have the submitted draft content.
        */
-      if (this.freet.content === this.draft) {
+      if (this.freet.freet.content === this.draft) {
         const error = 'Error: Edited freet content should be different than current freet content.';
         this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
         setTimeout(() => this.$delete(this.alerts, error), 3000);
@@ -147,7 +147,7 @@ export default {
       }
 
       try {
-        const r = await fetch(`/api/freets/${this.freet._id}`, options);
+        const r = await fetch(`/api/freets/${this.freet.freet._id}`, options);
         if (!r.ok) {
           const res = await r.json();
           throw new Error(res.error);

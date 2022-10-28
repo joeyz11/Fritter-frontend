@@ -186,7 +186,7 @@ router.delete(
 /**
  * Modify a freet (and associated stampOfHumor)
  *
- * @name PUT /api/freets/:freetId
+ * @name PATCH /api/freets/:freetId
  *
  * @param {string} content - the new content for the freet
  * @param {string} satire - whether the new freet is satirical or not
