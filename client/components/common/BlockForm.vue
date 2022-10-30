@@ -17,7 +17,16 @@
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
+          
         />
+        <div v-else-if="field.id ==='satire'">
+          <label>
+            <input id="true" type="radio" name="satire" value="true" @change="field.value = $event.target.value"/> True
+          </label>
+          <label>
+            <input id="false" type="radio" name="satire" value="false" @change="field.value = $event.target.value"/> False
+          </label>
+        </div>
         <input
           v-else
           :type="field.id === 'password' ? 'password' : 'text'"
@@ -66,6 +75,19 @@ export default {
     };
   },
   methods: {
+    clearInputs() {
+      console.log('clearing inputs')
+      this.fields.map(field => {
+            const {id, value} = field;
+            if (field.id === 'content') {
+              field.value = '';
+            }
+            else if (field.id === 'satire') {
+              field.value = undefined;
+            }
+            return [id, value];
+          })
+    },
     async submit() {
       /**
         * Submits a form with the specified options from data().
@@ -79,14 +101,17 @@ export default {
         options.body = JSON.stringify(Object.fromEntries(
           this.fields.map(field => {
             const {id, value} = field;
-            field.value = '';
             return [id, value];
           })
         ));
+        console.log('options body', options.body)
       }
 
       try {
         const r = await fetch(this.url, options);
+        if (r.ok) {
+          this.clearInputs();
+        }
         if (!r.ok) {
           // If response is not okay, we throw an error and enter the catch block
           const res = await r.json();
@@ -145,7 +170,7 @@ form h3 {
 }
 
 textarea {
-   font-family: inherit;
-   font-size: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>

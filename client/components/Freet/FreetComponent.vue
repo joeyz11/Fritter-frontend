@@ -36,18 +36,29 @@
         </button>
       </div>
     </header>
-    <textarea
-      v-if="editing"
+    <div v-if="editing">
+      <textarea
       class="content"
       :value="draft"
       @input="draft = $event.target.value"
-    />
-    <p
+      />
+      <div>
+        <label>
+          <input id="true" type="radio" name="satire" value="true" @change="editStamp = $event.target.value"/> True
+        </label>
+        <label>
+          <input id="false" type="radio" name="satire" value="false" @change="editStamp = $event.target.value"/> False
+        </label>
+      </div>
+    </div>
+    
+    <div
       v-else
       class="content"
     >
-      {{ freet.freet.content }}
-    </p>
+      <p>{{ freet.freet.content }}</p> 
+      <p>Satire: {{freet.stampOfHumor.isSatire}}</p>
+  </div>
     <p class="info">
       Posted at {{ freet.freet.dateModified }}
       <i v-if="freet.freet.edited">(edited)</i>
@@ -78,6 +89,7 @@ export default {
     return {
       editing: false, // Whether or not this freet is in edit mode
       draft: this.freet.freet.content, // Potentially-new content for this freet
+      editStamp: this.freet.stampOfHumor.isSatire,
       alerts: {} // Displays success/error messages encountered during freet modification
     };
   },
@@ -88,6 +100,7 @@ export default {
        */
       this.editing = true; // Keeps track of if a freet is being edited
       this.draft = this.freet.freet.content; // The content of our current "draft" while being edited
+      this.editStamp = this.freet.stampOfHumor.isSatire;
     },
     stopEditing() {
       /**
@@ -95,6 +108,7 @@ export default {
        */
       this.editing = false;
       this.draft = this.freet.freet.content;
+      this.editStamp = this.freet.stampOfHumor.isSatire;
     },
     deleteFreet() {
       /**
@@ -124,7 +138,7 @@ export default {
       const params = {
         method: 'PATCH',
         message: 'Successfully edited freet!',
-        body: JSON.stringify({content: this.draft}),
+        body: JSON.stringify({content: this.draft, satire: this.editStamp}),
         callback: () => {
           this.$set(this.alerts, params.message, 'success');
           setTimeout(() => this.$delete(this.alerts, params.message), 3000);
