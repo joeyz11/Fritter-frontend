@@ -3,41 +3,40 @@
 <!-- This navbar takes advantage of both flex and grid layouts for positioning elements; feel free to redesign as you see fit! -->
 
 <template>
-  <nav>
-    <div class="left">
-      <img src="../../public/logo.svg">
-      <h1 class="title">
-        Fritter
-      </h1>
-    </div>
-    <div class="right">
-      <router-link to="/">
-        Home
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/account"
-      >
-        Account
-      </router-link>
-      <router-link
-        v-else
-        to="/login"
-      >
-        Login
-      </router-link>
-    </div>
-    <section class="alerts">
-      <article
-        v-for="(status, alert, index) in $store.state.alerts"
-        :key="index"
-        :class="status"
-      >
-        <p>{{ alert }}</p>
-      </article>
-    </section>
-  </nav>
+    <nav>
+        <div class="left">
+            <img src="../../public/logo.svg" />
+            <h1 class="title">Fritter</h1>
+        </div>
+        <div>
+            <DiverifyComponent />
+        </div>
+        <div class="right">
+            <router-link to="/"> Home </router-link>
+            <router-link v-if="$store.state.username" to="/account">
+                Account
+            </router-link>
+            <router-link v-else to="/login"> Login </router-link>
+        </div>
+        <section class="alerts">
+            <article
+                v-for="(status, alert, index) in $store.state.alerts"
+                :key="index"
+                :class="status"
+            >
+                <p>{{ alert }}</p>
+            </article>
+        </section>
+    </nav>
 </template>
+
+<script>
+import DiverifyComponent from "@/components/Diversify/DiversifyComponent.vue";
+
+export default {
+    components: { DiverifyComponent },
+};
+</script>
 
 <style scoped>
 nav {
@@ -59,8 +58,8 @@ img {
 }
 
 .left {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .right {

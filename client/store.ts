@@ -12,7 +12,9 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    alerts: {} // global success/error messages encountered during submissions to non-visible forms
+    alerts: {}, // global success/error messages encountered during submissions to non-visible forms
+
+    diversified: false,
   },
   mutations: {
     alert(state, payload) {
@@ -49,10 +51,31 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available freets.
        */
+      let diversifiedRes = []
+      if (state.diversified) {
+        diversifiedRes = await fetch('/api/diversify').then(async r => r.json());
+      }
       const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
       const res = await fetch(url).then(async r => r.json());
-      state.freets = res;
+      state.freets = diversifiedRes.concat(res);
+    },
+    toggleDiversify(state) {
+      /**
+       * Update the state deciding if diversified freets should be shown
+       */
+      state.diversified = !state.diversified;
     }
+  },
+  actions: {
+    toggleDiversify(context) {
+      context.commit('toggleDiversify');
+      context.commit('refreshFreets')
+    } 
+  },
+  getters: {
+    // getDiversifyStatus(state) {
+    //   return state.diversified
+    // }
   },
   // Store data across page refreshes, only discard on browser close
   plugins: [createPersistedState()]

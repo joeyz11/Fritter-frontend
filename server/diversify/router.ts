@@ -58,7 +58,7 @@ router.get(
       const opposeDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Oppose);
       return ({
         message: 'Your diversified freets has been fetched successfully.',
-        diversifiedFreet: freetUtil.constructFreetResponse(freet),
+        freet: freetUtil.constructFreetResponse(freet),
         stampOfHumor: stampOfHumorUtil.constructStampOfHumorResponse(stampOfHumor),
         supportDiscussion: discussionUtil.constructDiscussionResponse(supportDiscussion),
         neutralDiscussion: discussionUtil.constructDiscussionResponse(neutralDiscussion),

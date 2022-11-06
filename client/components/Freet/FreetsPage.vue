@@ -7,7 +7,6 @@
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
       <CreateFreetForm />
-      <CreateStampOfHumorForm />
     </section>
     <section v-else>
       <header>
@@ -63,8 +62,6 @@
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
-
-import CreateStampOfHumorForm from '@/components/StampOfHumor/CreateStampOfHumorForm.vue';
 
 export default {
   name: 'FreetPage',
