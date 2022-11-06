@@ -73,9 +73,7 @@ const store = new Vuex.Store({
     } 
   },
   getters: {
-    // getDiversifyStatus(state) {
-    //   return state.diversified
-    // }
+
   },
   // Store data across page refreshes, only discard on browser close
   plugins: [createPersistedState()]

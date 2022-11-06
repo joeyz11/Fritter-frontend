@@ -86,18 +86,18 @@ class FreetCollection {
         return freet.content;
       }).join(', ');
       const diversifiedFreets: Array<HydratedDocument<Freet>>  = []
-  
+      console.log('all content', allUserFreetContent)
       if (!allUserFreetContent.includes("cat")) {
-        diversifiedFreets.push(allFritterDiversifyFreets[0])
+        diversifiedFreets.push(allFritterDiversifyFreets[0]);
       }
       if (!allUserFreetContent.includes("gif")) {
-        diversifiedFreets.push(allFritterDiversifyFreets[1])
+        diversifiedFreets.push(allFritterDiversifyFreets[1]);
       }
       if (!allUserFreetContent.includes("6.170")) {
-        diversifiedFreets.push(allFritterDiversifyFreets[2])
+        diversifiedFreets.push(allFritterDiversifyFreets[2]);
       }
       if (!allUserFreetContent.includes("pizza")) {
-        diversifiedFreets.push(allFritterDiversifyFreets[3])
+        diversifiedFreets.push(allFritterDiversifyFreets[3]);
       }
       return diversifiedFreets
     }
