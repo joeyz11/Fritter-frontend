@@ -61,6 +61,7 @@ router.get(
       })
     }));
     res.status(200).json(response);
+    return;
   },
   [
     userValidator.isAuthorExists
@@ -85,8 +86,34 @@ router.get(
       })
     }));
     res.status(200).json(response);
+    return;
   }
 );
+
+router.get(
+  '/:freetId?',
+  async(req: Request, res: Response, next: NextFunction) => {
+    console.log('params', req.params);
+    console.log('query', req.query); 
+  
+    const freetId = req.params.freetId
+    const freet = await FreetCollection.findOne(freetId);
+    const stampOfHumor = await StampOfHumorCollection.findOne(freetId);
+
+    const supportDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Support);
+    const neutralDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Neutral);
+    const opposeDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Oppose);
+
+    res.status(200).json({
+      freet: freetUtil.constructFreetResponse(freet),
+      stampOfHumor: stampOfHumorUtil.constructStampOfHumorResponse(stampOfHumor),
+      supportDiscussion: discussionUtil.constructDiscussionResponse(supportDiscussion),
+      neutralDiscussion: discussionUtil.constructDiscussionResponse(neutralDiscussion),
+      opposeDiscussion: discussionUtil.constructDiscussionResponse(opposeDiscussion),
+    });
+    return;
+  }
+)
 
 /**
  * Create a new freet (and associated stampOfHumors and discussions)

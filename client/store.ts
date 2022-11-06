@@ -51,13 +51,25 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available freets.
        */
+      
+      const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
+      const res = await fetch(url).then(async r => r.json());
+
       let diversifiedRes = []
       if (state.diversified) {
         diversifiedRes = await fetch('/api/diversify').then(async r => r.json());
+        console.log(diversifiedRes);
+        if (diversifiedRes.error) {
+          // TODO: fix alert when user not logged in
+          alert(diversifiedRes.error)
+          return diversifiedRes;
+        }
+        state.freets = diversifiedRes.concat(res);
+      } else {
+        state.freets = res
       }
-      const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
-      const res = await fetch(url).then(async r => r.json());
-      state.freets = diversifiedRes.concat(res);
+
+      
     },
     toggleDiversify(state) {
       /**
