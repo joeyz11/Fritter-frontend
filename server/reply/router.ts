@@ -37,10 +37,10 @@ router.get(
       next();
       return;
     }
-    else if (req.query.discussionId !== undefined) {
-      next('route');
-      return;
-    }
+    // else if (req.query.discussionId !== undefined) {
+    //   next('route');
+    //   return;
+    // }
     else {
       // get all replies
     const allReplies = await ReplyCollection.findAll();
@@ -54,40 +54,8 @@ router.get(
     }));
     res.status(200).json(response);
     return;
-    }
-    
+    } 
 
-
-    // // get replied from discussion
-    // const discussionId = (req.query.discussionId as string)
-    // const upvotesOfDiscussion = await UpvoteCollection.findAllByDiscussion(discussionId)
-
-    // // sort by descreasing numUpvote
-    // function upvoteBubbleSort(upvotes: Array<HydratedDocument<Upvote>>){
-    //   //Outer pass
-    //   for(let i = 0; i < upvotes.length; i++){
-    //       //Inner pass
-    //       for(let j = 0; j < upvotes.length - i - 1; j++){
-    //           //Value comparison using descending order
-    //           if(upvotes[j + 1].numUpvote > upvotes[j].numUpvote){
-    //               //Swapping
-    //               [upvotes[j + 1],upvotes[j]] = [upvotes[j],upvotes[j + 1]]
-    //           }
-    //       }
-    //   };
-    //   return upvotes;
-    // };
-
-    // const orderedUpvotesOfDiscussion = upvoteBubbleSort(upvotesOfDiscussion);
-    // const response = await Promise.all(orderedUpvotesOfDiscussion.map(async (upvote) => {
-    //   const replyId = upvote.replyId;
-    //   const reply = await ReplyCollection.findOne(replyId);
-    //   return ({
-    //     reply: replyUtil.constructReplyResponse(reply),
-    //     upvote: upvoteUtil.constructUpvoteResponse(upvote),
-    //   }) 
-    // }))
-    // res.status(200).json(response);
   },
   [
     userValidator.isAuthorExists
@@ -104,6 +72,7 @@ router.get(
       })
     }));
     res.status(200).json(response);
+    return;
   }
 );
 
@@ -118,13 +87,11 @@ router.get(
  *
  */
 router.get(
-  '/',
-  [
-    discussionValidator.isDiscussionsByIdExists
-  ],
+  '/:discussionId',
   async (req: Request, res: Response, next: NextFunction) => {
 // get replied from discussion
-const discussionId = (req.query.discussionId as string)
+console.log('replies params', req.params)
+const discussionId = (req.params.discussionId as string);
 const upvotesOfDiscussion = await UpvoteCollection.findAllByDiscussion(discussionId)
 
 // sort by descreasing numUpvote

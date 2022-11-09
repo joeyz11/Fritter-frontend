@@ -85,7 +85,11 @@ const store = new Vuex.Store({
     } 
   },
   getters: {
-
+    getFreetById: (state) => (freetId) => {
+      const freet = state.freets.find((freet) => freet.freet._id === freetId);
+      return freet
+    },
+  
   },
   // Store data across page refreshes, only discard on browser close
   plugins: [createPersistedState()]

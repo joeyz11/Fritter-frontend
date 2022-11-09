@@ -1,55 +1,67 @@
 <template>
     <div>
-        <div>Discussion Page Here</div>
-        <div>{{ freet }}</div>
-        <div>{{ stampOfHumor }}</div>
-        <div>{{ supportDiscussion }}</div>
-        <div>{{ neutralDiscussion }}</div>
-        <div>{{ opposeDiscussion }}</div>
-        <!-- <FreetComponent :key="freet._id" :freet="freet" /> -->
+        <FreetComponent
+            :freet="
+                $store.state.freets.find(
+                    (freet) =>
+                        freet.freet._id ===
+                        this.$route.params.freetId.toString()
+                )
+            "
+        />
+
+        <DiscussionComponent
+            :supportReplies="supportReplies"
+            :neutralReplies="neutralReplies"
+            :opposeReplies="opposeReplies"
+        />
     </div>
 </template>
 
 <script>
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
-import { onBeforeMount } from "vue";
+import DiscussionComponent from "@/components/Discussion/DiscussionComponent.vue";
 
 export default {
     data() {
         return {
-            freet: {
-                type: Object,
+            supportReplies: {
+                type: Array,
                 required: true,
             },
-            stampOfHumor: {
-                type: Object,
+            neutralReplies: {
+                type: Array,
                 required: true,
             },
-            supportDiscussion: {
-                type: Object,
-                required: true,
-            },
-            neutralDiscussion: {
-                type: Object,
-                required: true,
-            },
-            opposeDiscussion: {
-                type: Object,
+            opposeReplies: {
+                type: Array,
                 required: true,
             },
         };
     },
-    components: { FreetComponent },
+    components: { FreetComponent, DiscussionComponent },
 
-    async created() {
-        const r = await fetch(`/api/freets/${this.$route.params.freetId}`);
+    async beforeCreate() {
+        const freetId = this.$route.params.freetId.toString();
+        const r = await fetch(`/api/freets/${freetId}`);
         const res = await r.json();
-        console.log(res);
-        this.freet = res.freet;
-        this.stampOfHumor = res.stampOfHumor;
-        this.supportDiscussion = res.supportDiscussion;
-        this.neutralDiscussion = res.neutralDiscussion;
-        this.opposeDiscussion = res.opposeDiscussion;
+
+        const supportR = await fetch(
+            `/api/replies/${res.supportDiscussion._id}`
+        );
+
+        const neutralR = await fetch(
+            `/api/replies/${res.neutralDiscussion._id}`
+        );
+        const opposeR = await fetch(`/api/replies/${res.opposeDiscussion._id}`);
+
+        const supportRes = await supportR.json();
+        const neutralRes = await neutralR.json();
+        const opposeRes = await opposeR.json();
+
+        this.supportReplies = supportRes;
+        this.neutralReplies = neutralRes;
+        this.opposeReplies = opposeRes;
 
         // try {
         //     const r = await fetch(
