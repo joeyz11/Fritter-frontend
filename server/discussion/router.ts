@@ -11,7 +11,7 @@ const router = express.Router();
 /**
  * Get discussions of freet
  *
- * @name GET /api/discussions?freetId=id
+ * @name GET /api/discussions/:freetId
  *
  * @return {DiscussionResponse[]} - An array of discussions associated with the freetId
  * @throws {400} - If freetId is not given
@@ -19,12 +19,12 @@ const router = express.Router();
  *
  */
 router.get(
-  '/',
-  [
-    freetValidator.isFreetExists
-  ],
+  '/:freetId?',
+  // [
+  //   freetValidator.isFreetExists
+  // ],
   async (req: Request, res: Response) => {
-    const freetId = (req.query.freetId as string);
+    const freetId = (req.params.freetId as string);
     // get 'support', 'neutral', 'oppose' discussions
     const supportDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Support);
     const neutralDiscussion = await DiscussionCollection.findOne(freetId, Sentiment.Neutral);

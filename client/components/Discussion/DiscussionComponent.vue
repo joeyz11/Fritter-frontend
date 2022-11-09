@@ -2,7 +2,7 @@
     <div>
         <b-tabs content-class="mt-3">
             <b-tab title="Support" active>
-                <div v-if="supportReplies.length">
+                <div v-if="supportReplies && supportReplies.length">
                     <div :key="sRep._id" v-for="sRep in supportReplies">
                         <ReplyComponent :reply="sRep" />
                     </div>

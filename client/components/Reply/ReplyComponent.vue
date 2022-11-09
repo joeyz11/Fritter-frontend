@@ -144,9 +144,10 @@ export default {
                     console.log("res error", res);
                     throw new Error(res.error);
                 }
-
                 this.editing = false;
-                // this.$store.commit("refreshReplies");
+                this.$store.dispatch("refreshDiscussionsAction", {
+                    freetId: this.$store.state.currFreet.freet._id.toString(),
+                });
 
                 params.callback();
             } catch (e) {

@@ -15,6 +15,11 @@ const store = new Vuex.Store({
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
 
     diversified: false,
+    currFreet: null,
+    supportDiscussions: [],
+    neutralDiscussions: [],
+    opposeDiscussions: [],
+
   },
   mutations: {
     alert(state, payload) {
@@ -76,19 +81,38 @@ const store = new Vuex.Store({
        * Update the state deciding if diversified freets should be shown
        */
       state.diversified = !state.diversified;
-    }
+    },
+    async refreshDiscussions(state, freetId) {
+      state.currFreet = await fetch(`/api/freets/${freetId}`).then(async r => r.json());
+      const res = await fetch(`/api/discussions/${freetId}`).then(async r => r.json());
+
+      const supportRes = await fetch(
+          `/api/replies/${res.supportDiscussion._id}`
+      ).then(async r => r.json());
+      const neutralRes = await fetch(
+          `/api/replies/${res.neutralDiscussion._id}`
+      ).then(async r => r.json());
+      const opposeRes = await fetch(`/api/replies/${res.opposeDiscussion._id}`).then(async r => r.json());
+
+      state.supportDiscussions = supportRes;
+      state.neutralDiscussions = neutralRes;
+      state.opposeDiscussions = opposeRes;
+    },
   },
   actions: {
     toggleDiversify(context) {
       context.commit('toggleDiversify');
-      context.commit('refreshFreets')
-    } 
+      context.commit('refreshFreets');
+    },
+    refreshDiscussionsAction(context, {freetId}) {
+      context.commit('refreshDiscussions', freetId);
+    }
   },
   getters: {
-    getFreetById: (state) => (freetId) => {
-      const freet = state.freets.find((freet) => freet.freet._id === freetId);
-      return freet
-    },
+    // getFreetById: (state) => (freetId) => {
+    //   const freet = state.freets.find((freet) => freet.freet._id === freetId);
+    //   return freet
+    // },
   
   },
   // Store data across page refreshes, only discard on browser close
