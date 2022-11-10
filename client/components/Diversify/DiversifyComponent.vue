@@ -1,8 +1,8 @@
 <template>
-    <button v-if="$store.state.diversified" @click="toggleDiversify">
+    <v-btn v-if="$store.state.diversified" @click="toggleDiversify">
         Diversify Off
-    </button>
-    <button v-else @click="toggleDiversify">Diversify On</button>
+    </v-btn>
+    <v-btn v-else @click="toggleDiversify">Diversify On</v-btn>
 </template>
 
 <script>

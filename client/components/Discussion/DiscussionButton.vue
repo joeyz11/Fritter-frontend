@@ -1,5 +1,5 @@
 <template>
-    <button @click="openDiscussion">Open Discussions</button>
+    <v-btn @click="openDiscussion">Open Discussions</v-btn>
 </template>
 
 <script>

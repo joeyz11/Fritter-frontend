@@ -1,20 +1,22 @@
 <!-- Default page that also displays freets -->
 
 <template>
-    <main>
+    <main class="freetPage">
         <section v-if="$store.state.username">
-            <header>
+            <header class="welcome">
                 <h2>Welcome @{{ $store.state.username }}</h2>
             </header>
             <CreateFreetForm />
         </section>
         <section v-else>
-            <header>
+            <header class="welcome">
                 <h2>Welcome to Fritter!</h2>
             </header>
             <article>
-                <h3>
-                    <router-link to="/login"> Sign in </router-link>
+                <h3 class="login">
+                    <router-link to="/login" style="text-decoration: none">
+                        Sign in
+                    </router-link>
                     to create, edit, and delete freets.
                 </h3>
             </article>
@@ -24,6 +26,9 @@
                 <div class="left">
                     <h2>
                         Viewing all freets
+                        <div v-show="$store.state.username">
+                            <DiverifyComponent />
+                        </div>
                         <span v-if="$store.state.filter">
                             by @{{ $store.state.filter }}
                         </span>
@@ -33,7 +38,7 @@
                     <GetFreetsForm
                         ref="getFreetsForm"
                         value="author"
-                        placeholder="🔍 Filter by author (optional)"
+                        placeholder="🔍 Search by author"
                         button="🔄 Get freets"
                     />
                 </div>
@@ -53,13 +58,19 @@
 </template>
 
 <script>
+import DiverifyComponent from "@/components/Diversify/DiversifyComponent.vue";
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
 import CreateFreetForm from "@/components/Freet/CreateFreetForm.vue";
 import GetFreetsForm from "@/components/Freet/GetFreetsForm.vue";
 
 export default {
     name: "FreetPage",
-    components: { FreetComponent, GetFreetsForm, CreateFreetForm },
+    components: {
+        DiverifyComponent,
+        FreetComponent,
+        GetFreetsForm,
+        CreateFreetForm,
+    },
     mounted() {
         this.$refs.getFreetsForm.submit();
     },
@@ -87,5 +98,11 @@ section .scrollbox {
     flex: 1 0 50vh;
     padding: 3%;
     overflow-y: scroll;
+}
+.freetPage {
+    margin: 0 20%;
+}
+.login {
+    margin-bottom: 30px;
 }
 </style>

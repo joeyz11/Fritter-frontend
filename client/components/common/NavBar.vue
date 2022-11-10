@@ -5,18 +5,26 @@
 <template>
     <nav>
         <div class="left">
-            <img src="../../public/logo.svg" />
-            <h1 class="title">Fritter</h1>
-        </div>
-        <div>
-            <DiverifyComponent />
+            <router-link to="/" class="home" style="text-decoration: none">
+                <img src="../../public/logo.svg" class="logo" />
+            </router-link>
         </div>
         <div class="right">
-            <router-link to="/"> Home </router-link>
-            <router-link v-if="$store.state.username" to="/account">
-                Account
+            <router-link to="/" class="home" style="text-decoration: none">
+                <v-btn text style="color: #fff; font-size: 20px"> Home </v-btn>
             </router-link>
-            <router-link v-else to="/login"> Login </router-link>
+            <router-link
+                v-if="$store.state.username"
+                to="/account"
+                style="text-decoration: none"
+            >
+                <v-btn text style="color: #fff; font-size: 20px">
+                    Account
+                </v-btn>
+            </router-link>
+            <router-link v-else to="/login" style="text-decoration: none">
+                <v-btn text style="color: #fff; font-size: 20px"> Login </v-btn>
+            </router-link>
         </div>
         <section class="alerts">
             <article
@@ -31,17 +39,14 @@
 </template>
 
 <script>
-import DiverifyComponent from "@/components/Diversify/DiversifyComponent.vue";
-
-export default {
-    components: { DiverifyComponent },
-};
+export default {};
 </script>
 
 <style scoped>
 nav {
-    padding: 1vw 2vw;
-    background-color: #ccc;
+    padding: 1vw 16vw;
+    margin-bottom: 40px;
+    background-color: #1da1f2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -51,10 +56,11 @@ nav {
 .title {
     font-size: 32px;
     margin: 0 5px;
+    color: #fff;
 }
 
-img {
-    height: 32px;
+.logo {
+    height: 44px;
 }
 
 .left {
@@ -73,7 +79,6 @@ img {
 .right a {
     margin-left: 5px;
 }
-
 .alerts {
     width: 25%;
 }

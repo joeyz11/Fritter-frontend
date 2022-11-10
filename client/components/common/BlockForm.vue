@@ -9,15 +9,20 @@
                 <label :for="field.id">{{ field.label }}:</label>
                 <textarea
                     v-if="field.id === 'content'"
+                    style="border: solid 1px"
                     :name="field.id"
                     :value="field.value"
                     @input="field.value = $event.target.value"
                 />
-                <div v-else-if="field.id === 'satire'">
+                <div
+                    v-else-if="field.id === 'satire'"
+                    style="display: flex; flex-direction: column"
+                >
                     <label>
                         <input
                             id="true"
                             type="radio"
+                            style="vertical-align: middle; margin: 0px"
                             name="satire"
                             value="true"
                             @change="field.value = $event.target.value"
@@ -37,6 +42,7 @@
                 </div>
                 <input
                     v-else
+                    style="border: solid 1px"
                     :type="field.id === 'password' ? 'password' : 'text'"
                     :name="field.id"
                     :value="field.value"
@@ -47,9 +53,9 @@
         <article v-else>
             <p>{{ content }}</p>
         </article>
-        <button type="submit">
+        <v-btn type="submit">
             {{ title }}
-        </button>
+        </v-btn>
         <section class="alerts">
             <article
                 v-for="(status, alert, index) in alerts"
@@ -137,6 +143,10 @@ export default {
                     this.$store.commit("refreshFreets");
                 }
 
+                if (this.refreshDiscussions) {
+                    this.$store.commit("refreshDiscussions");
+                }
+
                 if (this.callback) {
                     this.callback();
                 }
@@ -179,7 +189,8 @@ form h3 {
 }
 
 textarea {
-    font-family: inherit;
-    font-size: inherit;
+    border: 2px;
 }
+
 </style>
+

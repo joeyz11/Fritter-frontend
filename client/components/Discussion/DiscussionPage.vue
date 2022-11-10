@@ -1,23 +1,29 @@
 <template>
-    <div>
-        <FreetComponent :freet="$store.state.currFreet" />
+    <main class="discussionPage">
+        <FreetComponent
+            :freet="$store.state.currFreet"
+            :allButton="false"
+            showSatire="true"
+        />
+        <CreateReplyForm />
         <DiscussionComponent
             :supportReplies="$store.state.supportDiscussions"
             :neutralReplies="$store.state.neutralDiscussions"
             :opposeReplies="$store.state.opposeDiscussions"
         />
-    </div>
+    </main>
 </template>
 
 <script>
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
 import DiscussionComponent from "@/components/Discussion/DiscussionComponent.vue";
+import CreateReplyForm from "@/components/Reply/CreateReplyForm.vue";
 
 export default {
     data() {
         return {};
     },
-    components: { FreetComponent, DiscussionComponent },
+    components: { FreetComponent, DiscussionComponent, CreateReplyForm },
 
     async created() {
         const freetId = this.$route.params.freetId.toString();
@@ -44,4 +50,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.discussionPage {
+    margin: 0 20%;
+}
+</style>

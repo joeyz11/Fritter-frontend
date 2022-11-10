@@ -16,6 +16,7 @@ const store = new Vuex.Store({
 
     diversified: false,
     currFreet: null,
+
     supportDiscussions: [],
     neutralDiscussions: [],
     opposeDiscussions: [],
@@ -73,8 +74,6 @@ const store = new Vuex.Store({
       } else {
         state.freets = res
       }
-
-      
     },
     toggleDiversify(state) {
       /**
@@ -84,6 +83,7 @@ const store = new Vuex.Store({
     },
     async refreshDiscussions(state, freetId) {
       state.currFreet = await fetch(`/api/freets/${freetId}`).then(async r => r.json());
+      console.log(state.currFreet)
       const res = await fetch(`/api/discussions/${freetId}`).then(async r => r.json());
 
       const supportRes = await fetch(

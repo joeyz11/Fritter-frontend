@@ -1,23 +1,29 @@
 <template>
     <article class="reply">
+        <div>
+            <v-btn @click="incUpvote">upvote</v-btn>
+            <!-- <div>{{ netUpvote }}</div> -->
+            <v-btn @click="decUpvote">downvote</v-btn>
+        </div>
         <header>
             <h3 class="author">@{{ reply.reply.author }}</h3>
             <div
                 v-if="$store.state.username === reply.reply.author"
                 class="actions"
             >
-                <button v-if="editing" @click="submitEdit">
+                <v-btn v-if="editing" @click="submitEdit">
                     ✅ Save changes
-                </button>
-                <button v-if="editing" @click="stopEditing">
+                </v-btn>
+                <v-btn v-if="editing" @click="stopEditing">
                     🚫 Discard changes
-                </button>
-                <button v-if="!editing" @click="startEditing">✏️ Edit</button>
-                <button @click="deleteReply">🗑️ Delete</button>
+                </v-btn>
+                <v-btn v-if="!editing" @click="startEditing">✏️ Edit</v-btn>
+                <v-btn @click="deleteReply">🗑️ Delete</v-btn>
             </div>
         </header>
         <div v-if="editing">
             <textarea
+                style="border: solid 1px"
                 class="content"
                 :value="draft"
                 @input="draft = $event.target.value"
@@ -58,9 +64,64 @@ export default {
             editing: false, // Whether or not this reply is in edit mode
             draft: this.reply.reply.content, // Potentially-new content for this reply
             alerts: {}, // Displays success/error messages encountered during reply modification
+            netUpvote: null,
         };
     },
     methods: {
+        async getNetUpvote() {
+            const res = await fetch(
+                `/api/upvotes/${this.reply.reply._id}`
+            ).then(async (r) => r.json());
+            this.netUpvote = res.upvote.numUpvote;
+        },
+        async incUpvote() {
+            try {
+                const options = {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin", // Sends express-session credentials with request
+                };
+                const res = await fetch(
+                    `/api/upvotes/${this.reply.reply._id}/inc`,
+                    options
+                ).then(async (r) => r.json());
+                console.log(res);
+                this.netUpvote = res.upvote.numUpvote;
+                this.$store.commit(
+                    "refreshDiscussions",
+                    this.$store.state.currFreet.freet._id
+                );
+                this.getNetUpvote();
+            } catch (e) {
+                const message = "Cannot vote again!";
+                this.$set(this.alerts, message, "error");
+                setTimeout(() => this.$delete(this.alerts, message), 3000);
+            }
+        },
+        async decUpvote() {
+            try {
+                const options = {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin", // Sends express-session credentials with request
+                };
+                const res = await fetch(
+                    `/api/upvotes/${this.reply.reply._id}/dec`,
+                    options
+                ).then(async (r) => r.json());
+                console.log(res);
+                this.netUpvote = res.upvote.numUpvote;
+                this.$store.commit(
+                    "refreshDiscussions",
+                    this.$store.state.currFreet.freet._id
+                );
+                this.getNetUpvote();
+            } catch (e) {
+                const message = "Cannot vote again!";
+                this.$set(this.alerts, message, "error");
+                setTimeout(() => this.$delete(this.alerts, message), 3000);
+            }
+        },
         startEditing() {
             /**
              * Enables edit mode on this reply.
@@ -155,6 +216,9 @@ export default {
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
         },
+    },
+    async created() {
+        this.getNetUpvote();
     },
 };
 </script>

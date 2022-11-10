@@ -11,6 +11,16 @@ import UserCollection from '../user/collection';
 
 const router = express.Router();
 
+router.get(
+  '/:replyId?',
+  async (req: Request, res: Response) => {
+    const replyId = req.params.replyId
+    const upvote = await UpvoteCollection.findOne(replyId)
+    res.status(200).json({
+      upvote: upvoteUtil.constructUpvoteResponse(upvote), 
+    })
+  }
+)
 /**
  * Increment upvote of associated replyId
  *

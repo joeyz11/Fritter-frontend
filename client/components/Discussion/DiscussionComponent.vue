@@ -26,6 +26,17 @@
                 <div v-else>No comments here:(</div>
             </b-tab>
         </b-tabs>
+        <!-- <v-tabs>
+            <v-tab>
+
+            </v-tab>
+            <v-tab>
+                
+            </v-tab>
+            <v-tab>
+                
+            </v-tab>
+        </v-tabs> -->
     </div>
 </template>
 
