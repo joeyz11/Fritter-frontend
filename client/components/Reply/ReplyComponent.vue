@@ -1,9 +1,9 @@
 <template>
     <article class="reply">
         <div>
-            <v-btn @click="incUpvote">upvote</v-btn>
+            <!-- <v-btn @click="incUpvote">upvote</v-btn> -->
             <!-- <div>{{ netUpvote }}</div> -->
-            <v-btn @click="decUpvote">downvote</v-btn>
+            <!-- <v-btn @click="decUpvote">downvote</v-btn> -->
         </div>
         <header>
             <h3 class="author">@{{ reply.reply.author }}</h3>
@@ -91,7 +91,7 @@ export default {
                     "refreshDiscussions",
                     this.$store.state.currFreet.freet._id
                 );
-                this.getNetUpvote();
+                // this.getNetUpvote();
             } catch (e) {
                 const message = "Cannot vote again!";
                 this.$set(this.alerts, message, "error");
@@ -115,7 +115,7 @@ export default {
                     "refreshDiscussions",
                     this.$store.state.currFreet.freet._id
                 );
-                this.getNetUpvote();
+                // this.getNetUpvote();
             } catch (e) {
                 const message = "Cannot vote again!";
                 this.$set(this.alerts, message, "error");
