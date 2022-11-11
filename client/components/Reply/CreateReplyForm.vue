@@ -6,7 +6,7 @@ export default {
     mixins: [BlockForm],
     data() {
         return {
-            url: `/api/replies/${this.$store.state.currFreet.freet._id}`,
+            url: `/api/replies/${this.discussionId}`,
             method: "POST",
             hasBody: true,
             fields: [{ id: "content", label: "Content", value: "" }],
@@ -18,6 +18,22 @@ export default {
                 setTimeout(() => this.$delete(this.alerts, message), 3000);
             },
         };
+    },
+    props: {
+        discussionId: {
+            type: String,
+        },
+    },
+    watch: {
+        discussionId: {
+            immediate: true,
+            deep: true,
+            handler(newValue, oldValue) {
+                console.log("updating to", newValue);
+
+                this.discussionId = newValue;
+            },
+        },
     },
 };
 </script>

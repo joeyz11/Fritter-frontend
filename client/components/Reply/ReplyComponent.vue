@@ -207,7 +207,7 @@ export default {
                 }
                 this.editing = false;
                 this.$store.dispatch("refreshDiscussionsAction", {
-                    freetId: this.$store.state.currFreet.freet._id.toString(),
+                    freetId: this.$store.state.currFreet.freet._id,
                 });
 
                 params.callback();

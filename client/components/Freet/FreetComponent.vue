@@ -4,7 +4,15 @@
 <template>
     <article class="freet">
         <header>
-            <h3 class="author">@{{ freet.freet.author }}</h3>
+            <div style="display: flex; justify-content: space-between">
+                <span class="author">@{{ freet.freet.author }}</span>
+                <span
+                    style=""
+                    v-show="freet.freet.author === 'FritterDiversify'"
+                    >(Made with &lt;3)</span
+                >
+            </div>
+
             <p class="info">
                 Posted at {{ freet.freet.dateModified }}
                 <i v-if="freet.freet.edited">(edited)</i>
@@ -67,7 +75,6 @@
         >
             <v-btn v-if="editing" @click="submitEdit"> ✅ Save changes </v-btn>
         </div>
-
         <router-link
             :to="{ name: 'Discussion', params: { freetId: freet.freet._id } }"
             style="text-decoration: none"
@@ -117,6 +124,11 @@ export default {
             editStamp: this.freet.stampOfHumor.isSatire,
             alerts: {}, // Displays success/error messages encountered during freet modification
         };
+    },
+    computed: {
+        // showSatireNow() {
+        //     return this.showSatire;
+        // },
     },
     methods: {
         startEditing() {
@@ -206,6 +218,7 @@ export default {
                 }
 
                 this.editing = false;
+                vm.$forceUpdate();
                 this.$store.commit("refreshFreets");
 
                 params.callback();
@@ -229,6 +242,8 @@ export default {
 
 .author {
     font-weight: bold;
+    font-size: 32px;
+    margin-right: 80px;
 }
 .info {
     font-size: 12px;

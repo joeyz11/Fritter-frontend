@@ -3,9 +3,9 @@
         <FreetComponent
             :freet="$store.state.currFreet"
             :allButton="false"
-            showSatire="true"
+            :showSatire="true"
         />
-        <CreateReplyForm />
+        <!-- <CreateReplyForm /> -->
         <DiscussionComponent
             :supportReplies="$store.state.supportDiscussions"
             :neutralReplies="$store.state.neutralDiscussions"

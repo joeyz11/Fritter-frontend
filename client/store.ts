@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 
     diversified: false,
     currFreet: null,
-
+    currDiscussionId: null,
     supportDiscussions: [],
     neutralDiscussions: [],
     opposeDiscussions: [],
@@ -81,9 +81,12 @@ const store = new Vuex.Store({
        */
       state.diversified = !state.diversified;
     },
+    updateCurrDiscussionId(state, sentiment) {
+      state.currDiscussionId = state.currFreet[sentiment]._id;
+    },
     async refreshDiscussions(state, freetId) {
-      state.currFreet = await fetch(`/api/freets/${freetId}`).then(async r => r.json());
-      console.log(state.currFreet)
+      // state.currFreet = await fetch(`/api/freets/${freetId}`).then(async r => r.json());
+      // console.log(state.currFreet)
       const res = await fetch(`/api/discussions/${freetId}`).then(async r => r.json());
 
       const supportRes = await fetch(
@@ -105,7 +108,12 @@ const store = new Vuex.Store({
       context.commit('refreshFreets');
     },
     refreshDiscussionsAction(context, {freetId}) {
+      console.log('refressDiscussionAction freetId', freetId);
       context.commit('refreshDiscussions', freetId);
+    },
+    updateCurrDiscussionId(context, {sentiment}) {
+      console.log('in store', sentiment)
+      context.commit('updateCurrDiscussionId', sentiment);
     }
   },
   getters: {

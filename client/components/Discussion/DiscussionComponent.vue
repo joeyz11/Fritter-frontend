@@ -1,7 +1,12 @@
 <template>
     <div>
-        <b-tabs content-class="mt-3">
-            <b-tab title="Support" active>
+        <CreateReplyForm :discussionId="$store.state.currDiscussionId" />
+        <b-tabs fill content-class="mt-3">
+            <b-tab
+                title="Support"
+                active
+                @click="setCurrDiscussionId('supportDiscussion')"
+            >
                 <div v-if="supportReplies && supportReplies.length">
                     <div :key="sRep._id" v-for="sRep in supportReplies">
                         <ReplyComponent :reply="sRep" />
@@ -9,7 +14,10 @@
                 </div>
                 <div v-else>No comments here:(</div>
             </b-tab>
-            <b-tab title="Neutral">
+            <b-tab
+                title="Neutral"
+                @click="setCurrDiscussionId('neutralDiscussion')"
+            >
                 <div v-if="neutralReplies.length">
                     <div :key="nRep._id" v-for="nRep in neutralReplies">
                         <ReplyComponent :reply="nRep" />
@@ -17,7 +25,10 @@
                 </div>
                 <div v-else>No comments here:(</div>
             </b-tab>
-            <b-tab title="Oppose">
+            <b-tab
+                title="Oppose"
+                @click="setCurrDiscussionId('opposeDiscussion')"
+            >
                 <div v-if="opposeReplies.length">
                     <div :key="oRep._id" v-for="oRep in opposeReplies">
                         <ReplyComponent :reply="oRep" />
@@ -42,10 +53,11 @@
 
 <script>
 import ReplyComponent from "@/components/Reply/ReplyComponent.vue";
+import CreateReplyForm from "@/components/Reply/CreateReplyForm.vue";
 
 export default {
     name: "DiscussionComponent",
-    components: { ReplyComponent },
+    components: { ReplyComponent, CreateReplyForm },
     props: {
         supportReplies: {
             type: Array,
@@ -61,7 +73,18 @@ export default {
         },
     },
     data() {
-        return {};
+        return {
+            sentiment: "supportDiscussion",
+        };
+    },
+    methods: {
+        setCurrDiscussionId(sentiment) {
+            console.log("sent", sentiment);
+            this.$store.commit("updateCurrDiscussionId", sentiment);
+        },
+    },
+    created() {
+        this.$store.commit("updateCurrDiscussionId", "supportDiscussion");
     },
 };
 </script>

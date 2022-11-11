@@ -124,6 +124,7 @@ export default {
                 if (r.ok) {
                     this.clearInputs();
                 }
+                console.log("r", r);
                 if (!r.ok) {
                     // If response is not okay, we throw an error and enter the catch block
                     const res = await r.json();
@@ -144,7 +145,10 @@ export default {
                 }
 
                 if (this.refreshDiscussions) {
-                    this.$store.commit("refreshDiscussions");
+                    this.$store.commit(
+                        "refreshDiscussions",
+                        this.$store.state.currFreet.freet._id
+                    );
                 }
 
                 if (this.callback) {
@@ -191,6 +195,4 @@ form h3 {
 textarea {
     border: 2px;
 }
-
 </style>
-
